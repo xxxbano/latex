@@ -1,0 +1,218 @@
+% use exlatex command to complie this file
+
+\documentclass[11pt]{article}
+\usepackage{fontspec,xunicode,xltxtra}
+\usepackage{amsmath}
+\usepackage{titlesec}
+\usepackage{ragged2e}
+\usepackage{rotating}
+\usepackage{pbox}
+\usepackage{hyperref}
+\usepackage[table]{xcolor}
+%\usepackage{color,colortbl}
+\usepackage[top=1in,bottom=1in,left=1.25in,right=1.25in]{geometry}
+
+\hypersetup{ 
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=red,
+	linktoc=all
+}
+
+\definecolor{Gray}{gray}{0.9}
+
+\XeTeXlinebreaklocale "ja"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+
+%======Fonts list======================
+%==font size [tiny,scriptsize,footnotesize,small,normalsize,large,Large,LARGE,huge,Huge]
+%======================================
+\newfontfamily\msg{MS Gothic}
+\newfontfamily\mspg{MS PGothic}
+\newfontfamily\msm{MS Mincho}
+\newfontfamily\mspm{MS PMincho}
+%\newfontfamily\msjhei{Microsoft JhengHei}
+\setmainfont{MS Mincho}
+%\renewcommand{\baseinestretch}{1.25}
+
+%=====Title setting==================
+%==\part,\chapter,\section,\subsection,\subsubsection,\paragraph,\subparagraph
+%==shape:hang,block,display,runin,leftmargin,rightmargin,drop,wrap,frame
+%====================================
+\titleformat{\section}[hang]{\large\msg}{\thesection}{0.5em}{}
+\titlespacing{\section}{0pc}{0.5pc}{0.3pc}
+
+\titleformat{\subsection}[hang]{\normalsize\msg}{\thesubsection}{0.5em}{}
+\titlespacing{\subsection}{0pc}{0.5pc}{0.3pc}
+
+\titleformat{\paragraph}[runin]{\normalsize\msg}{\theparagraph}{0em}{}
+\titlespacing{\paragraph}{0pc}{1pc}{0.5pc}
+
+\renewcommand{\baselinestretch}{1.4}
+\renewcommand{\contentsname}{目次}
+\renewcommand{\refname}{参考文献}
+\renewcommand{\tablename}{表}
+\renewcommand{\figurename}{図}
+%\renewcommand{\appandixname}{付録}
+
+
+\title{
+\LARGE\msg title 
+}
+\author{
+\normalsize company 
+\\[-0.5pc]\normalsize R&D 
+}
+%\date{\normalsize \today}
+
+\begin{document}
+
+%\maketitle
+
+\tableofcontents
+
+\thispagestyle{empty}
+
+\newpage
+\section{はじめに}
+\setcounter{page}{1}
+
+急速なネットワーク環境の充実に伴い、
+
+\section{耐タンパ}
+
+\subsection{ブロック図}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=6cm]{./fig/overall.eps}
+\vspace{-13pt}
+\caption{コアブロック図}
+\label{fig:overall}
+\end{figure}
+
+コアブロック図を図\ref{fig:overall}に示す。
+
+\subsection{性能}
+
+\begin{table}[!h]
+\vspace{-13pt}
+\caption{性能}
+\label{tab:performance}
+\centering
+\vspace{5pt}
+\begin{tabular}{|l|l|}
+\hline
+長 & 128-bit  \\
+\hline
+大 & 170 MHz  \\
+\hline
+規模 & 6890 gate \\
+\hline
+レイテンシ & 230 clk \\
+\hline
+速度 & 94 Mbps \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{説明}
+
+\begin{table}[!h]
+%\vspace{-13pt}
+%\caption{説明}
+%\label{tab:t}
+\centering
+\vspace{5pt}
+\begin{tabular}{|l|c|p{10.2cm}|}
+\rowcolor{Gray}
+\hline
+信号名 & IN/OUT & 説明 \\
+\hline
+clk & IN & クロック \\
+\hline
+asrstB & IN & 非同期リセット（Active low）\\
+\hline
+ctl [3:0] & IN & 
+制御信号 \newline 
+ctl[3:0]=4'b0000、選択してない。 \newline
+ctl[3:0]=4'b0001、入力する。 \newline
+ctl[3:0]=4'b0010、入力する。 \newline
+ctl[3:0]=4'b0011、入力する。 \newline
+ctl[3:0]=4'b0100、入力して。 \newline
+ctl[3:0]=4'b0101、入力して。 \newline
+ctl[3:0]=4'b0110、入力して。\newline
+Others、定義なし。\\
+\hline
+ibs [31:0] & IN &
+バス入力信号 \\
+\hline
+ird [7:0] & IN &
+入力信号 \\
+\hline
+srd & IN &
+入力信号 \\
+\hline
+ack & OUT &
+通知信号 \newline
+ack=0、ビジー状態(操作できない)。 \newline
+ack=1、操作できる状態。 \\
+\hline
+obs [31:0] & OUT &
+バス出力  \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{使用説明}
+\label{sec:ip}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=11cm]{./fig/enc.eps}
+\vspace{-13pt}
+\caption{入出力順番}
+\label{fig:enc}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=11cm]{./fig/dec.eps}
+\vspace{-13pt}
+\caption{出力順番}
+\label{fig:dec}
+\end{figure}
+
+異なる。
+
+詳しい処理順番を以下に記す。
+\vspace{-1ex} \begin{enumerate}
+\setlength{\itemsep}{-1ex}
+%\renewcommand\theenumi{\textcircled{\scriptsize\arabic{enumi}}} 
+%\renewcommand\theenumi{\textcircled{\footnotesize\arabic{enumi}}} 
+%\renewcommand\theenumi{\textcircled{\arabic{enumi}}} 
+%\renewcommand{\labelenumi}{\theenumi}
+\item リセット。
+\item 鍵入力。
+\end{enumerate}
+
+\subsection{信号}
+\ref{sec:ip}で述べた
+
+出力順番
+
+
+%\section{まとめ}
+
+
+\begin{thebibliography}{9}
+
+\bibitem{exp} "組みガイド," 機構, 2000年3月.
+
+\end{thebibliography}
+
+\begin{appendix}
+\end{appendix}
+
+
+\end{document}             % End of documentp
